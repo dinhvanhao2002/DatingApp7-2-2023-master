@@ -28,3 +28,9 @@ export class AuthGuard implements CanActivate {
   }
 
 }
+
+
+//
+//AuthGuard  đc sử dụng để ktra tính hợp lệ của việc truy cập vào các trang
+//nó kiểm tr XEM NG DÙNG ĐÃ ĐĂNG NHẬP hay chwua
+// nếu ng dùng đăng nhập thì trả về true 

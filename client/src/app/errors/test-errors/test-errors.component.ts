@@ -14,22 +14,22 @@ export class TestErrorsComponent implements OnInit {
   constructor(private http:HttpClient) {}
 
   ngOnInit(): void {
-  } 
-  
-  get404Errors() {
-    this.http.get(this.baseUrl + 'buggy/not-found').subscribe(response=>{
-       console.log(response);
+  }
+
+  get404Errors(){
+    this.http.get(this.baseUrl + 'buggy/not-found').subscribe(response =>{
+      console.log(response);
     }, error =>{
       console.log(error);
     })
   }
- 
+
     get400Errors() {
     this.http.get(this.baseUrl + 'buggy/bad-request').subscribe(response=>{
        console.log(response);
     }, error =>{
       console.log(error);
-    })  
+    })
   }
 
     get500Errors() {

@@ -1,1 +1,11 @@
-<p>member-list works!</p>
+<div class="row">
+  <div *ngFor="let member of members" class="col-2">
+      <app-member-card [member]="member" ></app-member-card>
+  </div>
+</div>
+
+<!-- ngfor dùng để lặp các phần tử của 1 mảng , trong trường hợp này là danh sách các thành viên
+  let member of members , mỗi lần lặp biến member sẽ nhận giá trị một pt trong mảng
+  [member]= member truyền giá trị biến member vào thuộc tính member của cpm
+-->
+
