@@ -43,3 +43,7 @@ namespace API.DTOs
     
     }
 }
+// dto là 1 kiểu dữ liệu đc sử dụng trong việc phân tán , được sử dụng chuyển dữ liệu giữ các tầng khác nhau 
+
+// giúp tách biệt dữ liệu từ  lớp đối tượng ứng dụng và dữ liệu đc truyền tải 
+// chuyển tư tầng modl sang view

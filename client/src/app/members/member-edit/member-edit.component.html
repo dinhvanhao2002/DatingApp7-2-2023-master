@@ -3,9 +3,11 @@
     <h1>Your profiles </h1>
   </div>
   <div class="col-8">
-    <div class="alert alert-info">
-      <p><strong>Information: </strong> You have made changes. Any unsaved changes will be lost </p>
+    <div class="alert alert-info" *ngIf="editForm.dirty">
+      <strong>Information: </strong> You have made changes. Any unsaved changes will be lost
     </div>
+    <!-- ngif nó áp dụng cho phân tử div .nếu biến editForm.dirty true hay false . nếu biến là tru thì hiện thi cái you have change
+    tức là đã thay đổi -->
   </div>
 
   <div class="col-4">
@@ -30,7 +32,7 @@
         </div>
       </div>
       <div class="card-footer">
-          <button form="editForm" type="submit"  class="button btn btn-success btn-block" >Save Changes</button>
+          <button [disabled]="!editForm.dirty" form="editForm" type="submit"  class="button btn btn-success btn-block" >Save Changes</button>
       </div>
     </div>
   </div>
@@ -63,11 +65,19 @@
      </tabset>
   </div>
 </div>
+
+<!-- GIẢI THÍCH NHỮNG ĐIỀU CẦN LƯU Ý -->
 <!-- đoạn mã ngif kiếm tra member đã đc tải lên thành công chưa
   <form  #editForm="ngForm"> định nghĩa 1 form trong angular
     edit form là 1
 khi nhấn vào nut save change ở button save change bắt sự kiện submit
 
+ <button [disabled]="editForm.dirty" form="editForm" type="submit"  class="button btn btn-success btn-block" >Save Changes</button>
+           thuộc tính disabled đc sử dụng để thay đổi trạng thái, nếu giá trị là true thì thuộc tính disabled sẽ đc apsdungj
+            disabled đc sủ dụng để ngăn chặn ng dùng click vào button để submit form nếu k có sự thay đổi nào trong form
+            thuộc tính dirty sẽ đc cập nhaath từ false sang tru .khi giá trị của thuộc tính dirty là true có nghĩa form đc thay đổi
+
+// nó cần tìm tên rõ ràng
 
 
 -->

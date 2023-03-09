@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component } from '@angular/core';
 import { Member } from 'src/app/_models/member';
 import { MembersService } from 'src/app/_services/members.service';
@@ -8,21 +9,28 @@ import { MembersService } from 'src/app/_services/members.service';
   styleUrls: ['./member-list.component.css']
 })
 export class MemberListComponent {
-  members: Member[] = [];
+  // members: Member[] = [];
+  members$! : Observable<Member[]> | undefined ;
+  // chứa dữ liệu danh sách thành viên
+  // members$ là biến chứa dữ liệu danh sách các thanh viên đc sử dụng hiển thị lên màn hình
+  
 
   constructor(private memberService: MembersService){}
 
   ngOnInit(): void {
-    this.loadMembers();
+    // this.loadMembers();
+    this.members$ = this.memberService.getMembers();
   }
-
-  loadMembers(){
-    this.memberService.getMembers().subscribe(members =>{
-      this.members = members;
-    },error=>{
-      console.log("loi cho nay")
-    })
 
   }
 
-}
+  // loadMembers(){
+  //   this.memberService.getMembers().subscribe(members =>{
+  //     this.members = members;
+  //   },error=>{
+  //     console.log("loi cho nay")
+  //   })
+
+  // }
+
+
