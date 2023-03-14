@@ -34,7 +34,6 @@ export class NavComponent implements OnInit {
   //ngOnit() là 1 vòng đời lifecycle hook trong angular
 
   login(){
-    
     console.log(this.model);
     this.accountService.login(this.model).subscribe(response =>{
       //khi đăng nhập thành công thì muốn nó vẫn ở phần tiếp theo của đăng ký

@@ -58,8 +58,12 @@
 
       </tab>
       <tab heading="Edit Photos">
-        <p>Photo Edit will here</p>
-
+        <!-- <p>Photo Edit will here</p> -->
+        <!-- truyển component photoedit vào -->
+        <app-photo-editor [member]="member"></app-photo-editor>
+          <!-- liên kết thuocj tính chuyển dữ liệu thành phần cha sang thành phần con
+          trong th này thành phần cha đc gọi là member
+        bất cứ thuộc tính đầu vào trong app-photo-edut thành phần đc cập nhật tự động -->
       </tab>
 
      </tabset>

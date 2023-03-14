@@ -21,6 +21,11 @@ namespace API.Data
             _context = context;
         }
 
+        public Task DeletePhotoAsync(string publicId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public async Task<MemberDto> GetMemberAsync(string username)
         {
             return await _context.Users

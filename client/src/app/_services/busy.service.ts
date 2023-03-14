@@ -18,10 +18,11 @@ export class BusyService {
 
       this.spinnerServices.show(undefined, {
         type: 'line-scale-party',
+        
         bdColor: 'rgba(255, 255, 255,0)',
         color:'#333333'
       });
-      // hiện thị bằng cái đặt nhất định 
+      // hiện thị bằng cái đặt nhất định
 
    }
    idle(){
@@ -36,3 +37,5 @@ export class BusyService {
 
 
 // sử lý phần spinner
+
+//ball-scale-multiple

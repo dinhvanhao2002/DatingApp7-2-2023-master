@@ -20,6 +20,8 @@ namespace API.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokenkey"]));
         }
 
+        // tạo tài khoản token 
+
         public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>
@@ -44,3 +46,16 @@ namespace API.Services
         }
     }
 }
+
+
+// tạo tài khoản token để quản lý và xác thực mã thông báo 
+// token là chuỗi lú tự đc sử dụng để xác thực ng dùng hoặc ứng dụng. trong quá trình xác thực ng dùng/*
+
+
+
+/*
+
+trong quá trình xác thực , token sẽ đc sinh ra và gửi đến máy khách(client)  và máy khách sẽ sử dụng để truy cập tài nguyên đc bảo vệ 
+trên máy chủ 
+
+*/

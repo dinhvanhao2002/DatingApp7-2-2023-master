@@ -16,7 +16,6 @@ export class AccountService {
   // phương thức để cấu hình người dung hiện tại, currUsersource là đc khởi tạo bởi replay
   // cho phép lắng nghe các phiên đăng nhập trc đó , `currentUser$` nó nhận lại các phiên đăng nhập
 
-
   // contructor nhận tham chiếu đến 1 đối tượn http client
   constructor(private http:HttpClient) { }
 
@@ -29,8 +28,9 @@ export class AccountService {
       map((reponse: User) => {
          const user = reponse;
          if (user) {
-           localStorage.setItem('user', JSON.stringify(user));
-           this.currentUserSource.next(user);
+          //  localStorage.setItem('user', JSON.stringify(user));
+          //  this.currentUserSource.next(user);
+          this.setCurrentUser(user);
          }
       })
     )
@@ -40,13 +40,20 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map((user: User) => {
          if (user) {
-           localStorage.setItem('user', JSON.stringify(user));
-           this.currentUserSource.next(user);
+          //  localStorage.setItem('user', JSON.stringify(user));
+          //  this.currentUserSource.next(user);
+          //cta có thể thay đổi ng dùng
+          this.setCurrentUser(user);
+
+
          }
       })
     )
   }
-    setCurrentUser(user: User) {
+  setCurrentUser(user: User) {
+      // để sử dụng lưu trữ cục bộ
+      localStorage.setItem('user', JSON.stringify(user));
+
       this.currentUserSource.next(user);
     }
     logout() {

@@ -19,6 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
     let currentUser!: User;
     // khai báo biến currentUser kiểu user , đc khởi tạo lưu trữ thông tin hiện tại được lấy từ currentUser trong accountService
     //thông tin user này sẽ đc thêm vào header
+    
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => currentUser = user);
     if(currentUser){
       request = request.clone({
@@ -33,7 +34,6 @@ export class JwtInterceptor implements HttpInterceptor {
   // intercept đc sử dụng để can thiệp vào request gửi từ client vs các response trả về từ server
   //pipe(take(1)) nó phát giá trị user hiện tại 1 lần duy nhất khi nó đc gọi
   // httphandle xử lý request truyền vào , gửi request đó đến server và nhận lại phản hồi từ serve
-
 }
 
 //jwt viết tắt json web token .đây là tiêu chuẩn mở đc sử dụng truyên thông tin giữa các bên dưới dạng 1 chuỗi json.jwt

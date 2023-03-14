@@ -17,7 +17,7 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm!: NgForm;
   // đc dùng để truy cập đối tượng con trong 1 component
   //  @ViewChild('editForm') để truy cập đối tượng editform
-  //! cho phép gán giá trị null hoặc underfined cho biến  trong trường hợp k tìm thấy đối tượng
+  //! cho phép gán giá trị null hoặc underfined cho biếntrong trường hợp k tìm thấy đối tượng
  @HostListener('window:beforeunload', ['$event']) unloadNotification($event : any){
   if(this.editForm.dirty){
     $event.returnValue = true;
@@ -25,7 +25,6 @@ export class MemberEditComponent implements OnInit {
  }
  //HostListener đc sử dụng để đăng ký 1 hàm xử lý sự kiện cho sự kiện window
  // sự kiện này kích hoạt khi ng dùng sắp rời khỏi trang hoặc tắt tab trình duyệt
-
 
 
 

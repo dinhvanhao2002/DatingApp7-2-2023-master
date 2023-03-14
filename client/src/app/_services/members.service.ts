@@ -70,12 +70,22 @@ export class MembersService {
         this.members[index] = member;
       })
     )
-
   }
   // nhận đối tương member là thông tin ng dùng cần cập nhật và gửi thông tin đó đi dưới dạng request
   // sau khi yêu cầu http put đc gửi đi và máy chủ đã cập nhật thông tin thành viên . pth này sử dụng toàn tử map()
   // để cập nhập thông tin thành viên , pth này sẽ tìm kiếm thanh viên bằng pth indexof
   // sau đó cập nhật thông tin của thanh viên tại vị trí index trong mảng
+  setMainPhoto(photoId:number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
+
+  }
+  //sau đó vào cpn photoedit để gọi hàm vào
+
+  deletePhoto(photoId : number){
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId)
+
+  }
+  // sau đó vào photoedit để tạo hàm delete
 
 }
 

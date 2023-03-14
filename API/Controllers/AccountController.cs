@@ -28,7 +28,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDTO>> Register(RegisterDTO registerDto)
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
-
+            // kiểm tra xem tên người dùng có tồn tại hay không, nếu tồn tại thì trả về thông báo 
             using var hmac = new HMACSHA512();
 
             var user = new AppUser
@@ -37,7 +37,6 @@ namespace API.Controllers
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key
             };
-
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -47,11 +46,15 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user)
             };
         }
+        // http post để đăng ký người dùng mới 
+        
         
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+            var user = await _context.Users
+            .Include(p=>p.Photos)
+            .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("Invalid username");
 
@@ -67,9 +70,16 @@ namespace API.Controllers
             return new UserDTO
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                // thuộc tính photourl của đối tượng userdto 
+                // đc khởi tạo danh sách ảnh 
+                //FirstOrDefault tra về ptuwr đầu tiên của danh sách , ktra xem đối tượng có rỗng hay không thì trả về mặc định là null
+
             };
         }
+
+        
         private async Task<bool> UserExists(string username)
         {
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
@@ -77,3 +87,6 @@ namespace API.Controllers
 
     }
 }
+
+
+//xử lý các yêu càu http liên quan đến xác thực ng dùng và quản lý tài khoản 
