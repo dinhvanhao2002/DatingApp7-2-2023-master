@@ -5,7 +5,8 @@ import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import { FileUploadModule } from 'ng2-file-upload';
-
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 
 @NgModule({
@@ -18,7 +19,9 @@ import { FileUploadModule } from 'ng2-file-upload';
     }),
     TabsModule.forRoot(),
     NgxGalleryModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot()
 
 
   ],
@@ -27,7 +30,9 @@ import { FileUploadModule } from 'ng2-file-upload';
     ToastrModule,
     TabsModule,
     NgxGalleryModule,
-    FileUploadModule
+    FileUploadModule,
+    BsDatepickerModule,
+    PaginationModule
   ]
 })
 export class SharedModule { }

@@ -17,10 +17,12 @@ namespace API.Helpers
              src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDto>(); // cho phép dữ liệu ảnh đc chuyển đổi từ lớp photo sang lớp photodto
             CreateMap<MemberUpdateDto, AppUser>();
+            CreateMap<RegisterDTO, AppUser>();
+
             
                
         }
     }
 }
 
-
+// mục đích để đổ dữ liệu chẳng hạn khi bạn muốn đk 1 ng dùng mới cho ứng dụng của mình , bạn có thể sử dụng registerdto để luuw trữ thông tin ng dùng và sử dụng appuser để lưu trữ thông tin ng dùng trong cở sở dữ liệu của ứng dụng 

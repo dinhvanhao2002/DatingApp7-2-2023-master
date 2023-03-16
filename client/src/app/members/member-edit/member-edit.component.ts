@@ -30,9 +30,9 @@ export class MemberEditComponent implements OnInit {
 
  //được sử dụng để lắng nghe sự kiện
 
-  member!: Member;
+  member: Member;
   //biến member lưu trữ thông tin thành viên trình sử
-  user !: User;
+  user : User;
   // lưu trữ thông tin của người dùng đang đăng nhập
   // dịch vụ thành viên và điều muốn làm là điền đối tượng
 

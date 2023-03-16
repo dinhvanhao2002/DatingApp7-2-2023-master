@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { PaginatedResult } from './../_models/pagination';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/enviroment';
@@ -15,35 +16,48 @@ import { Member } from '../_models/member';
 //    })
 //   }
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class MembersService {
-
   baseUrl = environment.apiUrl;
-
   members: Member[] = [];
   //dùng để khai báo 1 mảng các đối tượng member và gán nó bằng mảng rỗng
   //khi cần lưu trữ quá nhiều đối tượng có cùng kiểu dữ liệu thì
   //bạn có thể dùng mảng để quản lý
 
-
+  paginatedResult : PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
   constructor(private http: HttpClient ) {
-
   }
-  getMembers (): Observable<Member[]> { // phương thức này sẽ trả về 1 observables của 1 mảng
-    //console.log("goi ham trong member service")
-    if(this.members.length > 0 ) return of(this.members);
-    // còn lại trg hp mảng rỗng thì nó sẽ gửi yêu cầu http get tới máy chủ để lấy danh sách
-    //url và user sau đó sử dụng toán tử pipe để thực hiện 1 loạt các danh sách
-    // tóm lại pt này kiểm tra nếu ds thành viên đã đc tải trc đó và trả về danh sách đó nếu có
-    return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
-      map(members => {
-        this.members = members;
-        return members;
+
+  getMembers (page?: number, itemsPerPage?:number )  {   // itemsPerPage đại diện cho số lượng ptu// phương thức này sẽ trả về 1 observables của 1 mảng
+    let params = new HttpParams();
+    
+    if (page !== null && page !== undefined && itemsPerPage !== null && itemsPerPage !== undefined) {
+      params = params.append('pageNumber', page.toString());
+      params = params.append('itemsPerPage', itemsPerPage.toString());
+    }
+    // if(page !== null && itemsPerPage !==null )
+    // {
+    //   params = params.append('pageNumber', page!.toString());
+    //   params = params.append('itemsPerPage', itemsPerPage!.toString());
+    // }
+    return this.http.get<Member[]>(this.baseUrl + 'users', {observe: 'response', params}).pipe(
+      map(response => {
+        this.paginatedResult.result = response.body??[];
+        if(response.headers.get('Pagination')!== null )
+        {
+          this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')??'{}');
+        }
+        return this.paginatedResult;
       })
     )
-    }
+  }
+
+
+
 // thực hiện yêu cầu httpget đến 1 địa chỉ nhất định
   // nó trả về 1 obervable của một mảng các Member
   // đây là phương thức để lấy danh sách thành viên
@@ -55,14 +69,16 @@ export class MembersService {
     // nếu đã tìm thấy thì trả về đối tượng của thành viên bằng toán tử of
     if( member !== undefined ) return of(member);
 
-    // cuooois cùng nếu k tìm thấy thì pth sẽ gửi yêu cầu http get tới máy chủ để lấy thông tin của thành viên
-
+    // cuối cùng nếu k tìm thấy thì pth sẽ gửi yêu cầu http get tới máy chủ để lấy thông tin của thành viên
     return this.http.get<Member>(this.baseUrl + 'users/' + username)
   }
+
   // nó trả về 1 obervable của một đối tượng member cụ thể , tương ứng với username truyền vào(lấy từ API)
 
   // sau khi đã chạy đc postman đã hiện update thì vào trong memberservice
   // để tạo pt update
+
+
   updateMember(member: Member){  // nhân tham số đầu vào
     return this.http.put(this.baseUrl + 'users', member).pipe(
       map(()=>{
@@ -71,10 +87,9 @@ export class MembersService {
       })
     )
   }
-  // nhận đối tương member là thông tin ng dùng cần cập nhật và gửi thông tin đó đi dưới dạng request
-  // sau khi yêu cầu http put đc gửi đi và máy chủ đã cập nhật thông tin thành viên . pth này sử dụng toàn tử map()
-  // để cập nhập thông tin thành viên , pth này sẽ tìm kiếm thanh viên bằng pth indexof
-  // sau đó cập nhật thông tin của thanh viên tại vị trí index trong mảng
+
+
+
   setMainPhoto(photoId:number) {
     return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
 
@@ -88,5 +103,68 @@ export class MembersService {
   // sau đó vào photoedit để tạo hàm delete
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // // nhận đối tương member là thông tin ng dùng cần cập nhật và gửi thông tin đó đi dưới dạng request
+  // // sau khi yêu cầu http put đc gửi đi và máy chủ đã cập nhật thông tin thành viên . pth này sử dụng toàn tử map()
+  // // để cập nhập thông tin thành viên , pth này sẽ tìm kiếm thanh viên bằng pth indexof
+  // // sau đó cập nhật thông tin của thanh viên tại vị trí index trong mảng
+  // setMainPhoto(photoId:number) {
+  //   return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
+
+  // }
+
+
+  // getMembers (page?: number, itemsPerPage?:number ) {   // itemsPerPage đại diện cho số lượng ptu              // phương thức này sẽ trả về 1 observables của 1 mảng
+  //   //console.log("goi ham trong member service")
+  //   // if(this.members.length > 0 ) return of(this.members);
+  //   // còn lại trg hp mảng rỗng thì nó sẽ gửi yêu cầu http get tới máy chủ để lấy danh sách
+  //   //url và user sau đó sử dụng toán tử pipe để thực hiện 1 loạt các danh sách
+  //   // tóm lại pt này kiểm tra nếu ds thành viên đã đc tải trc đó và trả về danh sách đó nếu có
+
+
+
+  //   let params = new HttpParams();
+  //   if (page !== null && page !== undefined && itemsPerPage !== null && itemsPerPage !== undefined) {
+  //     params = params.append('pageNumber', page.toString());
+  //     params = params.append('itemsPerPage', itemsPerPage.toString());
+  //   }
+  //   // if(page !== null && itemsPerPage !==null )
+  //   // {
+  //   //   params = params.append('pageNumber', page!.toString());
+  //   //   params = params.append('itemsPerPage', itemsPerPage!.toString());
+  //   // }
+  //   return this.http.get<Member[]>(this.baseUrl + 'users', {observe: 'response', params}).pipe(
+  //     map(response => {
+  //       this.paginatedResult.result = response.body ?? [];
+  //       if(response.headers.get('Pagination') !==null )
+  //       {
+  //         this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')!);
+  //       }
+  //       return this.paginatedResult;
+  //     })
+  //   )
+  // }
+
+
 
 

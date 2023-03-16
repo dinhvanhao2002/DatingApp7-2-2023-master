@@ -2,6 +2,7 @@
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -33,9 +34,12 @@ namespace API.Controllers
 
         [HttpGet]
         // [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _userRepository.GetMembersAsync();
+            var users = await _userRepository.GetMembersAsync(userParams);
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
+             users.TotalCount, users.TotalPages);
+
             return Ok(users);
         }
         // lấy tất cả các thành viên trong cơ sở dữ liệu thông qua pt GetMembersAsync
@@ -75,6 +79,9 @@ namespace API.Controllers
             // nếu k thành công serve trả về mã trạng thái http 400 bad request
             return BadRequest("Failed to update user");
         }
+
+
+
 
         // [HttpPost("add-photo")]
         //bộ điều khiển ng dùng cho phép ng dùng thêm 1 ảnh mới 

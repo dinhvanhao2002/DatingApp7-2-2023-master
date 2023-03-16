@@ -11,10 +11,10 @@ import { MembersService } from 'src/app/_services/members.service';
 })
 export class MemberDetailComponent implements OnInit{
 
-  @Input() member! : Member;
+  @Input() member : Member;
  //  member : any;
-   galleryOptions!: NgxGalleryOptions[];
-   galleryImages!: NgxGalleryImage[];
+   galleryOptions: NgxGalleryOptions[];
+   galleryImages: NgxGalleryImage[];
 
 
    // để ! như này cho rằng biến k phải null hoặc undefined
@@ -57,6 +57,7 @@ export class MemberDetailComponent implements OnInit{
      this.memberService.getMember(this.router.snapshot.paramMap.get('username')||"").subscribe(member => {
        this.member = member;
         this.galleryImages=this.getImages();
+        
      }, error =>{
        console.log(error);
      })

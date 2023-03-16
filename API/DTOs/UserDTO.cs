@@ -13,6 +13,8 @@ namespace API.DTOs
 
         public string PhotoUrl { get; set; }
         // sau đó sử lý tại accountcontroller để lấy ảnh 
+
+        public  string KnownAs {get; set;}  // khai báo thêm thuộc tính knownas
     }
 }
 

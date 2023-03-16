@@ -24,8 +24,6 @@ export class PhotoEditorComponent implements OnInit {
 
   // khai báo 1 số thuộc tính sau
 
-
-
   constructor(private accountService: AccountService, private memberService: MembersService) {
     // lấy thông tin người dùng hiện tại
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user= user);
@@ -79,30 +77,27 @@ export class PhotoEditorComponent implements OnInit {
 
     });
 
-    this.uploader.onAfterAddingAll= (file)=>{
-      file.withCredentials = true;
+    this.uploader.onAfterAddingFile= (file)=>{
+      // file.withCredentials = true;
+      file.withCredentials = false;
+
 
     }
     //đc kích hoạt khi 1 hoặc nhiều tệp đc thêm vào hàng đợi đê tải lên
 
 
-    // thêm hàm upload
-    this.uploader.onAfterAddingFile = (file) => {
-      // console.log(fileItem);
-      file.withCredentials= true;
 
-    };
 
-    this.uploader.onBeforeUploadItem = (item) => {
-      // console.log(item);
-    };
+    // this.uploader.onBeforeUploadItem = (item) => {
+    //   // console.log(item);
+    // };
 
-    this.uploader.onProgressItem = (fileItem, progress) => {
-      // console.log(fileItem, progress);
-    };
+    // this.uploader.onProgressItem = (file, progress) => {
+    //   // console.log(fileItem, progress);
+    // };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
-      // console.log(fileItem, response, status, headers);
+       console.log(item, response, status, headers);
       //trả lại trạng thái
       // để sử lý phản hồi về cho máy chủ
       if(response){

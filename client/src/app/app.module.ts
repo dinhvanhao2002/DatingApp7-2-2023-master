@@ -24,7 +24,9 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { TextInputComponent } from './_forms/text-input/text-input.component';
+import { DateInputComponent } from './_forms/date-input/date-input.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +43,8 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     MemberCardComponent,
     MemberEditComponent,
     PhotoEditorComponent,
+    TextInputComponent,
+    DateInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +52,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     NgxSpinnerModule
   ],
@@ -55,7 +60,6 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}
-
 
   ],
   bootstrap: [AppComponent]

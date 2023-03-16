@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Interfaces
@@ -17,10 +18,14 @@ namespace API.Interfaces
         Task<ActionResult<AppUser>> GetUserByUsernameAsync();
         
 
-        Task<IEnumerable<MemberDto>> GetMembersAsync();
+        Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
+        // truy xuất danh sách thành viên , được sử dụng để truyền dữ liệu giữa các tầng ứng dụng thoog qua tham số userParams
+
         
         Task<MemberDto> GetMemberAsync(string username);
-        Task DeletePhotoAsync(string publicId);
+
+        
+        //Task DeletePhotoAsync(string publicId);
 
         //  Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
         // Task<MemberDto> GetMemberAsync(string username);
@@ -37,3 +42,4 @@ namespace API.Interfaces
 // webser server là phần nềm đc cài trên máy chủ(serverr) để đáp ứng c
 //các yêu cầu của ng dùng thông qua internet hoặc mạng nội bộ
 // chức năng nhận các yêu cầu http từ trình duyệt 
+
