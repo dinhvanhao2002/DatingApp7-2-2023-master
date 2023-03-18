@@ -32,9 +32,8 @@ export class MembersService {
   constructor(private http: HttpClient ) {
   }
 
-  getMembers (page?: number, itemsPerPage?:number )  {   // itemsPerPage đại diện cho số lượng ptu// phương thức này sẽ trả về 1 observables của 1 mảng
+  getMembers (page: number, itemsPerPage:number){   // itemsPerPage đại diện cho số lượng ptu// phương thức này sẽ trả về 1 observables của 1 mảng
     let params = new HttpParams();
-    
     if (page !== null && page !== undefined && itemsPerPage !== null && itemsPerPage !== undefined) {
       params = params.append('pageNumber', page.toString());
       params = params.append('itemsPerPage', itemsPerPage.toString());
@@ -46,8 +45,8 @@ export class MembersService {
     // }
     return this.http.get<Member[]>(this.baseUrl + 'users', {observe: 'response', params}).pipe(
       map(response => {
-        this.paginatedResult.result = response.body??[];
-        if(response.headers.get('Pagination')!== null )
+        this.paginatedResult.result = response.body?? [];
+        if(response.headers.get('Pagination')!== null)
         {
           this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')??'{}');
         }
@@ -58,7 +57,7 @@ export class MembersService {
 
 
 
-// thực hiện yêu cầu httpget đến 1 địa chỉ nhất định
+  // thực hiện yêu cầu httpget đến 1 địa chỉ nhất định
   // nó trả về 1 obervable của một mảng các Member
   // đây là phương thức để lấy danh sách thành viên
 
@@ -88,11 +87,8 @@ export class MembersService {
     )
   }
 
-
-
   setMainPhoto(photoId:number) {
     return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {})
-
   }
   //sau đó vào cpn photoedit để gọi hàm vào
 
