@@ -39,7 +39,7 @@ namespace API.Controllers
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
             // lấy thông tin ng dùng hiện tại bằng pth GetUserBy..
             userParams.CurrentUsername = user.UserName;
-
+        
             if(string.IsNullOrEmpty(userParams.Gender))
             {
                 userParams.Gender = user.Gender =="male" ? "female" : "male";

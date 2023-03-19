@@ -1,10 +1,12 @@
 import { PaginatedResult } from './../_models/pagination';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, pipe, take } from 'rxjs';
 import { environment } from 'src/environments/enviroment';
 import { Member } from '../_models/member';
 import { UserParams } from '../_models/userParams';
+import { AccountService } from './account.service';
+import { User } from '../_models/user';
 
 // const httpOptions  = {
 //   // là 1 đối tượng đc sủ dụng để thiết lập cacs tùy chọn http request
@@ -27,22 +29,59 @@ export class MembersService {
   //dùng để khai báo 1 mảng các đối tượng member và gán nó bằng mảng rỗng
   //khi cần lưu trữ quá nhiều đối tượng có cùng kiểu dữ liệu thì
   //bạn có thể dùng mảng để quản lý
+  memberCache = new Map();
+  // lưu dữ liệu đc lấy từ serve
+
+  user : User;
+  userParams : UserParams;
 
 
-  constructor(private http: HttpClient ) {
+
+  constructor(private http: HttpClient , private accountService: AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user;
+      this.userParams = new UserParams(user);
+    })
+  }
+  // hàm khởi tạo để nó nhận đối tượng của lớp khới tạo
+
+  getUserParams(){
+    return this.userParams;
+
+  }
+
+  setUserParams(params: UserParams){
+    this.userParams = params;
+  }
+  resetUserParams(){
+    this.userParams = new UserParams(this.user);
+    return this.userParams;
+
   }
 
 
   getMembers (userParams: UserParams){   // itemsPerPage đại diện cho số lượng ptu// phương thức này sẽ trả về 1 observables của 1 mảng
+   console.log(Object.values(userParams).join('-'));
+   //lấy giá trị thuộc tính của 1 object và ghép thành 1 chuỗi
+  var response = this.memberCache.get(Object.values(userParams).join('-'));
+  if (response) {
+    return of(response);
+  }
 
-  let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
+
+
+   let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
 
    params = params.append('minAge', userParams.minAge.toString());
    params = params.append('maxAge', userParams.maxAge.toString());
    params = params.append('gender', userParams.gender.toString());
-
+   params = params.append('orderBy', userParams.orderBy);
 
     return this.getPaginatedResult<Member[]>(this.baseUrl + 'users',params)
+    .pipe(map(response=>{
+      this.memberCache.set(Object.values(userParams).join('-'),response);
+      return response
+    }));
     // khi mà ta bôi đen extract to method in class
   }
   private getPaginatedResult<T>(url: string ,params: any ) {
@@ -86,11 +125,29 @@ export class MembersService {
 
   getMember(username: string){
     //trc khi gửi yêu cầu http thì pth sẽ tìm kiếm trong mảng members xem có thành viên nào có cùng tên đăng nhập hay k
-    const member = this.members.find(x => x.username === username);
-    // nếu đã tìm thấy thì trả về đối tượng của thành viên bằng toán tử of
-    if( member !== undefined ) return of(member);
+    // const member = this.members.find(x => x.username === username);
+    // // nếu đã tìm thấy thì trả về đối tượng của thành viên bằng toán tử of
+    // if( member !== undefined ) return of(member);
 
     // cuối cùng nếu k tìm thấy thì pth sẽ gửi yêu cầu http get tới máy chủ để lấy thông tin của thành viên
+    //console.log(this.memberCache);
+
+    // toán tử ... đc gọi là toán tử spread dc sử dụng để phân ra 1 mảng array haowjc 1 đối tượng object thành từng phần riêng lẻ
+    // và gán chúng tạo thành 1 mảng mới
+    const member = [...this.memberCache.values()]  // tạo mảng member
+
+    .reduce((arr,elem)=>arr.concat(elem.result), [])
+    .find((member: Member)=> member.username=== username);
+    // tìm phần tử đầu tiên của mảng kết quả result có thuộc tính là username và biến username
+
+    if(member)
+    {
+      // nếu tìm thấy thì tra về ..
+      return of(member);
+    }
+    // còn k thì chạy lệnh khách
+
+     console.log(member);
     return this.http.get<Member>(this.baseUrl + 'users/' + username)
   }
 

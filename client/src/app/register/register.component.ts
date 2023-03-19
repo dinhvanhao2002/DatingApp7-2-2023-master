@@ -23,9 +23,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(private accountService: AccountService, private toastr: ToastrService,
     private fb: FormBuilder, private router: Router ) {
-
-
-    }
+  }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -78,10 +76,8 @@ export class RegisterComponent implements OnInit {
         //  console.log(error);
         //  this.toastr.error(error.error);
         this.validationErrors= error;
-
        })
     }
-
     cancel() {
        this.cancelRegister.emit(false);
     }

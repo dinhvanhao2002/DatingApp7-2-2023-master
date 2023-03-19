@@ -23,10 +23,10 @@ namespace API.Data
             _context = context;
         }
 
-        public Task DeletePhotoAsync(string publicId)
-        {
-            throw new System.NotImplementedException();
-        }
+        // public Task DeletePhotoAsync(string publicId)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
@@ -45,15 +45,26 @@ namespace API.Data
             // .AsNoTracking()
             // .AsQueryable();
 
-            query = query.Where(u=> u.UserName  != userParams.CurrentUsername);
+            query = query.Where(u=> u.UserName!= userParams.CurrentUsername);
             // mục đích loại bỏ user giống với user ng dùng hiện tại, do là vì mình đã lấy tất cả
 
-            query = query.Where(u => u.Gender!= userParams.Gender);
+            query = query.Where(u => u.Gender== userParams.Gender);
             var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1); // tức là độ tuổi của ng dùng trừ đi 1 năm
             var maxDob = DateTime.Today.AddYears(-userParams.MinAge); // tức là độ tuổi tối thiểu của ng dùng 
 
-            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob); // ngày sinh của ng dùng hiện tại lớn hơn ngày sinh tối thiểu minbox
-            // ngày sinh của ng dùng nhỏ hơn ngày sinh tối đa 
+             query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob); // ngày sinh của ng dùng hiện tại lớn hơn ngày sinh tối thiểu minbox
+            // // ngày sinh của ng dùng nhỏ hơn ngày sinh tối đa 
+
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u=> u.Created),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+            // sử dụng biểu thực switch case trong c# dựa vào thuộc tính odderby của đối tượng 
+            // nếu giá trị odderby là created thì query sẽ đc sắp xếp theo thứu tự giảm dần
+
+
+
             return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsNoTracking(), userParams.PageNumber,userParams.PageSize);
 
 

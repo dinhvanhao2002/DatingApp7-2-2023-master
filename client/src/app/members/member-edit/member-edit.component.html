@@ -23,13 +23,14 @@
           <p>{{member.age}}</p>
         </div>
         <div class="">
-          <strong>Member since </strong>
-          <p>{{member.created}} </p>
-        </div>
-        <div class="">
           <strong>Last Active</strong>
           <p>{{member.lastActive}}</p>
         </div>
+        <div class="">
+          <strong>Member since </strong>
+          <p>{{member.created}} </p>
+        </div>
+
       </div>
       <div class="card-footer">
           <button [disabled]="!editForm.dirty" form="editForm" type="submit"  class="button btn btn-success btn-block" >Save Changes</button>

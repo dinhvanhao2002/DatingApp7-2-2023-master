@@ -10,7 +10,7 @@ export class PreventUnsavedChangesGuard implements CanDeactivate<unknown> {
   canDeactivate(
     component: MemberEditComponent)  : boolean {
       // nó cho phép kiêm tra 1 điều kiện nhất định
-      if(component.editForm.dirty){
+      if(component.editForm?.dirty){
         return confirm('Are you sure you want to continue ? Any unsaved changes will be lost')
       }
     return true;
