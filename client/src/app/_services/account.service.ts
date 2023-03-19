@@ -20,7 +20,6 @@ export class AccountService {
   constructor(private http:HttpClient) { }
 
   // contructor nhận tham chiếu đến 1 đối tượn http client
-
   login(model: any) {
     console.log('lỗi ở đây');
 

@@ -75,19 +75,17 @@ namespace API.Controllers
             {
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
             }
-
             return new UserDTO
             {
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                KnownAs =  user.KnownAs
-
+                KnownAs =  user.KnownAs,
+                Gender= user.Gender
 
                 // thuộc tính photourl của đối tượng userdto 
                 // đc khởi tạo danh sách ảnh 
                 //FirstOrDefault tra về ptuwr đầu tiên của danh sách , ktra xem đối tượng có rỗng hay không thì trả về mặc định là null
-
             };
         }
 

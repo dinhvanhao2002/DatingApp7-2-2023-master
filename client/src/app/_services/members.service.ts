@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/enviroment';
 import { Member } from '../_models/member';
+import { UserParams } from '../_models/userParams';
 
 // const httpOptions  = {
 //   // là 1 đối tượng đc sủ dụng để thiết lập cacs tùy chọn http request
@@ -17,7 +18,6 @@ import { Member } from '../_models/member';
 //   }
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -28,31 +28,53 @@ export class MembersService {
   //khi cần lưu trữ quá nhiều đối tượng có cùng kiểu dữ liệu thì
   //bạn có thể dùng mảng để quản lý
 
-  paginatedResult : PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
+
   constructor(private http: HttpClient ) {
   }
 
-  getMembers (page: number, itemsPerPage:number){   // itemsPerPage đại diện cho số lượng ptu// phương thức này sẽ trả về 1 observables của 1 mảng
-    let params = new HttpParams();
-    if (page !== null && page !== undefined && itemsPerPage !== null && itemsPerPage !== undefined) {
-      params = params.append('pageNumber', page.toString());
-      params = params.append('itemsPerPage', itemsPerPage.toString());
-    }
-    // if(page !== null && itemsPerPage !==null )
-    // {
-    //   params = params.append('pageNumber', page!.toString());
-    //   params = params.append('itemsPerPage', itemsPerPage!.toString());
-    // }
-    return this.http.get<Member[]>(this.baseUrl + 'users', {observe: 'response', params}).pipe(
+
+  getMembers (userParams: UserParams){   // itemsPerPage đại diện cho số lượng ptu// phương thức này sẽ trả về 1 observables của 1 mảng
+
+  let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
+
+   params = params.append('minAge', userParams.minAge.toString());
+   params = params.append('maxAge', userParams.maxAge.toString());
+   params = params.append('gender', userParams.gender.toString());
+
+
+    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users',params)
+    // khi mà ta bôi đen extract to method in class
+  }
+  private getPaginatedResult<T>(url: string ,params: any ) {
+    const paginatedResult : PaginatedResult<T> = new PaginatedResult<T>();
+    return this.http.get<T>(url, { observe: 'response', params }).pipe(
       map(response => {
-        this.paginatedResult.result = response.body?? [];
-        if(response.headers.get('Pagination')!== null)
+        if(response.body!=null  && response.body !== undefined)
         {
-          this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')??'{}');
+          paginatedResult.result = response.body;
         }
-        return this.paginatedResult;
-      })
-    )
+
+        if (response.headers.get('Pagination') !== null) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination') || '{}');
+          console.log(paginatedResult.result);
+        }
+        return paginatedResult;
+      }),
+      //map(paginatedResult => paginatedResult)
+    );
+  }
+
+
+
+  private getPaginationHeaders(pageNumber: number, pageSize: number)
+  {
+    let params = new HttpParams();
+    params = params.append('pageNumber', pageNumber.toString());
+    params = params.append('pageSize', pageSize.toString());
+
+    return params;
+
+
   }
 
 

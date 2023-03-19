@@ -1,4 +1,39 @@
-<div class="row">
+<div class="text-center mt-3">
+  <h2>Your matchs- {{pagination?.totalItems}} found</h2>
+
+</div>
+
+<div class="container d-flex mt-3">
+  <form #form="ngForm" class="form-inline mb-3 d-flex justify-content-center align-items-center" (ngSubmit)="loadMembers()">
+    <div class="form-group d-flex justify-content-center align-items-center mr-10" style="margin-right: 20px;">
+      <label >Age from:</label>
+      <input type="number" class="form-control ml-3" style="width:70px" name="minAge"
+      [(ngModel)]="userParams.minAge" >
+    </div>
+    <div class="form-group d-flex justify-content-center align-items-center" style="margin-right: 20px;">
+      <label >Age to:</label>
+      <input type="number form-group d-flex justify-content-center align-items-center" class="form-control ml-3" style="width:70px" name="maxAge"
+      [(ngModel)]="userParams.maxAge" >
+    </div>
+    <div class="from-group form-group d-flex justify-content-center align-items-center px-2" style="margin-right: 20px;">
+      <label >Show:</label>
+      <select name="gender" style="width:130px" [(ngModel)]="userParams.gender" class="form-control ml-1" >
+        <option *ngFor="let gender of genderList" [value]="gender.value">
+          {{gender.display}}
+        </option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary ml-1" type="submit">
+      Apply Filtet
+    </button>
+    <button (click)="resetFilters()" class="btn btn-info ml-1" type="submit">
+      Reset Filtet
+    </button>
+  </form>
+</div>
+
+<div class="row mt-3">
   <div *ngFor="let member of members" class="col-2">
       <app-member-card [member]="member" ></app-member-card>
   </div>
@@ -10,12 +45,11 @@
      [totalItems]="pagination.totalItems"
      [itemsPerPage]="pagination.itemsPerPage"
      [(ngModel)]="pagination.currentPage"
-     (ngModelChange)="pageChanged($event)"
+     (pageChanged)="pageChanged($event)"
      previousText="&lsaquo;"
      nextText="&rsaquo;"
      firstText="&laquo;"
      lastText="&raquo;">
-
 </pagination>
 
 </div>
