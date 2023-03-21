@@ -41,11 +41,13 @@ namespace API.Entities
 
         public ICollection<Photo> Photos { get; set; }
 
-        // public int GetAge(){
-        //     return DateOfBirth.CalculateAge();
-            
-        // }
-
+        public ICollection<UserLike> LikeByUsers { get; set; }
+        // đại diện cho bộ sưu tập các đối tượng trong UserLike , cho biết ng dùng nào đã thích hiện tịa 
+        // đc sử dụng để lưu trữ 1 tập hợp các đối tượng userlike 
+        //thuộc tính userlike cho biết tất cả các ng dùng đã thcihs ng dùng hiện tại
+        public ICollection<UserLike> LikedUsers { get; set; }
+        // thuộc tính này đại diện cho 1 bộ sưu tập các đối tượng trong userlike
+        // đại diện cho 1 ng dùng đã thực hiện like trên 1 ng dùng
         
     }
 }

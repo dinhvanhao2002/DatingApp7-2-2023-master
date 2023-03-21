@@ -177,6 +177,22 @@ export class MembersService {
   }
   // sau đó vào photoedit để tạo hàm delete
 
+  addLike(username: string){
+    return this.http.post(this.baseUrl + 'likes/' + username, {})
+  }
+
+  getLikes(predicate : string, pageNumber: number, pageSize : number)
+  {
+    // muốn phân trang ở client thì cần phải khai báo
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params= params.append('predicate', predicate)
+    // return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate='+ predicate);
+    //ban đầu nó trả về danh sách thôi nhưng bh nó sẽ trả lại như sau
+    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl+ 'likes', params);
+  }
+
+
+
 }
 
 

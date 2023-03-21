@@ -19,7 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
     let currentUser!: User;
     // khai báo biến currentUser kiểu user , đc khởi tạo lưu trữ thông tin hiện tại được lấy từ currentUser trong accountService
     //thông tin user này sẽ đc thêm vào header
-    
+
     this.accountService.currentUser$.pipe(take(1)).subscribe(user => currentUser = user);
     if(currentUser){
       request = request.clone({
