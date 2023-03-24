@@ -48,6 +48,12 @@ namespace API.Entities
         public ICollection<UserLike> LikedUsers { get; set; }
         // thuộc tính này đại diện cho 1 bộ sưu tập các đối tượng trong userlike
         // đại diện cho 1 ng dùng đã thực hiện like trên 1 ng dùng
-        
+
+        public ICollection<Message> MessagesSent { get; set; }
+
+        public ICollection<Message> MessagesReceived { get; set; }
+
+
     }
 }
+//nhưng thuộc tính nay sẽ đc thêm bởi migrations 

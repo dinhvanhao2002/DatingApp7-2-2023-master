@@ -1,3 +1,4 @@
+import { MemberDetailedResolver} from './_rosolvers/member-detailed.resolvers';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
@@ -20,11 +21,11 @@ const routes: Routes = [
     canActivate:[AuthGuard],
     children:[
        {path: 'members', component: MemberListComponent},
-       {path: 'members/:username', component: MemberDetailComponent},
+       {path: 'members/:username', component: MemberDetailComponent, resolve: {member: MemberDetailedResolver}},
        {path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard]},
        // khi mà người dùng thoat khỏi cpn này thì sẽ có 1 guard ngăn chặn hiện lên 1 dialog
        // hỏi xem ngdung có muốn thay đổi và chưa lưu lại hay chưa
-       
+
 
        {path: 'lists', component: ListsComponent},
        {path: 'messages', component: MessagesComponent},

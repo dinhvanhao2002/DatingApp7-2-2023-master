@@ -21,6 +21,8 @@ namespace API.Data
         // đại diện cho tập hợp các đối tượng userlike đc luuw trong cơ sở dữ liệu
         // cung cấp các pth để thực hiện các thao tac CRUD
 
+        public DbSet<Message> Messages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -38,18 +40,28 @@ namespace API.Data
                 .HasOne(s => s.LikedUser)
                 .WithMany(l => l.LikeByUsers)  // sử dụng quan hệ 1 nhiều ( 1 ng dùng có thể thích đc nhiều ng khác)
                 .HasForeignKey(s=>s.LikedUserId)
-                .OnDelete(DeleteBehavior.Cascade);
-                
+                .OnDelete(DeleteBehavior.Cascade); //chỉ định hành động xóa liên lục
+            
+            builder.Entity<Message>()
+                .HasOne(u=> u.Recipient)   // xác định 1 đối tượng Message chỉ có 1 đối tượng Recipinet ng nhận 
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+                //
+            builder.Entity<Message>()
+                .HasOne(u=> u.Sender) 
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict); //xác định hành động đc thực hiện khi đối tượng liên quan được xóa  
+            
         }
         // pth này dùng để cấu hình mô hình dữ liêu
         // cấu hình 1 số quan hệ giữa các bảng trong cở sở dữ liệu và sử dụng Fluent APi để đĩnh nghãi các thuộc tính trong bảng 
-
         //Fluent API là pp cấu hình các quan hệ giữa các đối tượng trở nên rõ ràng linh hoạt so với viejc sự dụng annotation
 
 
     }
 }
-
+// đại diện cho 1 đối tượng kết nối cơ sở dữ liệu
+//pth này dùng để cấu hình dữ liệu và xác định quan hệ giữa các bảng trong cơ sở dữ liệu 
 
 
 

@@ -36,7 +36,7 @@ namespace API.Controllers
         // [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             // lấy thông tin ng dùng hiện tại bằng pth GetUserBy..
             userParams.CurrentUsername = user.UserName;
         
@@ -74,7 +74,7 @@ namespace API.Controllers
             // như này sẽ cung cấp cho cta tên ng dùng từ mã thông báo mà API sử dụng để xác thực
             // lấy giá trị thuộc tính 
 
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             // lấy thông tin ng dùng hiện tại từ database 
 
             _mapper.Map(memberUpdateDto, user);
@@ -99,7 +99,7 @@ namespace API.Controllers
         public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file)
         {
             // lấy tên ng dùng để xác nhận quyền sở huwx 
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             // await đc sử dụng để chờ đợi pt getuserbyusername trả về đối tượng user đc lưu trữ trong biến user
 
             // như vậy đã có đối tượng ng dùng ở đya 
@@ -149,7 +149,7 @@ namespace API.Controllers
         [HttpPut("set-main-photo/{photoId}")]
         //PTH trả về Actionresult có thể là 1 trang web hiện thị các hình ảnh mới thành viên , hoặc thông báo 1 quá trình đặt làm hình nah thất bại
         public async Task<ActionResult> SetMainPhoto(int photoId){
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
             if(photo.IsMain) return BadRequest("This is already your main photo");
@@ -164,7 +164,7 @@ namespace API.Controllers
 
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId){
-            var user = await _userRepository.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
             if( photo == null) return NotFound();
             if(photo.IsMain) return BadRequest("You cannot delete a photo");
@@ -178,7 +178,6 @@ namespace API.Controllers
 
             if(await _userRepository.SaveAllAsync()) return Ok();
             return BadRequest("Failed to delete photo");
-
 
         }
 

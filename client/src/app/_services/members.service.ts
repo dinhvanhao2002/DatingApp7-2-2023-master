@@ -1,4 +1,4 @@
-import { PaginatedResult } from './../_models/pagination';
+
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, of, pipe, take } from 'rxjs';
@@ -7,6 +7,9 @@ import { Member } from '../_models/member';
 import { UserParams } from '../_models/userParams';
 import { AccountService } from './account.service';
 import { User } from '../_models/user';
+import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
+
+
 
 // const httpOptions  = {
 //   // là 1 đối tượng đc sủ dụng để thiết lập cacs tùy chọn http request
@@ -70,50 +73,19 @@ export class MembersService {
 
 
 
-   let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
+   let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
 
    params = params.append('minAge', userParams.minAge.toString());
    params = params.append('maxAge', userParams.maxAge.toString());
    params = params.append('gender', userParams.gender.toString());
    params = params.append('orderBy', userParams.orderBy);
 
-    return this.getPaginatedResult<Member[]>(this.baseUrl + 'users',params)
+    return getPaginatedResult<Member[]>(this.baseUrl + 'users',params, this.http)
     .pipe(map(response=>{
       this.memberCache.set(Object.values(userParams).join('-'),response);
       return response
     }));
     // khi mà ta bôi đen extract to method in class
-  }
-  private getPaginatedResult<T>(url: string ,params: any ) {
-    const paginatedResult : PaginatedResult<T> = new PaginatedResult<T>();
-    return this.http.get<T>(url, { observe: 'response', params }).pipe(
-      map(response => {
-        if(response.body!=null  && response.body !== undefined)
-        {
-          paginatedResult.result = response.body;
-        }
-
-        if (response.headers.get('Pagination') !== null) {
-          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination') || '{}');
-          console.log(paginatedResult.result);
-        }
-        return paginatedResult;
-      }),
-      //map(paginatedResult => paginatedResult)
-    );
-  }
-
-
-
-  private getPaginationHeaders(pageNumber: number, pageSize: number)
-  {
-    let params = new HttpParams();
-    params = params.append('pageNumber', pageNumber.toString());
-    params = params.append('pageSize', pageSize.toString());
-
-    return params;
-
-
   }
 
 
@@ -184,12 +156,51 @@ export class MembersService {
   getLikes(predicate : string, pageNumber: number, pageSize : number)
   {
     // muốn phân trang ở client thì cần phải khai báo
-    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    let params = getPaginationHeaders(pageNumber, pageSize);
     params= params.append('predicate', predicate)
+
     // return this.http.get<Partial<Member[]>>(this.baseUrl + 'likes?predicate='+ predicate);
+
     //ban đầu nó trả về danh sách thôi nhưng bh nó sẽ trả lại như sau
-    return this.getPaginatedResult<Partial<Member[]>>(this.baseUrl+ 'likes', params);
+    return getPaginatedResult<Partial<Member[]>>(this.baseUrl+ 'likes', params, this.http);
   }
+
+
+
+
+  // private getPaginatedResult<T>(url: string ,params: any ) {
+  //   const paginatedResult : PaginatedResult<T> = new PaginatedResult<T>();
+  //   return this.http.get<T>(url, { observe: 'response', params }).pipe(
+  //     map(response => {
+  //       if(response.body!=null  && response.body !== undefined)
+  //       {
+  //         paginatedResult.result = response.body;
+  //       }
+
+  //       if (response.headers.get('Pagination') !== null) {
+  //         paginatedResult.pagination = JSON.parse(response.headers.get('Pagination') || '{}');
+  //         console.log(paginatedResult.result);
+  //       }
+  //       return paginatedResult;
+  //     }),
+  //     //map(paginatedResult => paginatedResult)
+  //   );
+  // }
+
+
+
+  // private getPaginationHeaders(pageNumber: number, pageSize: number)
+  // {
+  //   let params = new HttpParams();
+  //   params = params.append('pageNumber', pageNumber.toString());
+  //   params = params.append('pageSize', pageSize.toString());
+
+  //   return params;
+
+
+  // }
+  // file này đc chuyển sang file mới paginationhelper
+
 
 
 

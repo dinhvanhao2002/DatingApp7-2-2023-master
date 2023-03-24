@@ -33,15 +33,10 @@ namespace API.Controllers
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
             // kiểm tra xem tên người dùng có tồn tại hay không, nếu tồn tại thì trả về thông báo 
 
-
             var user = _mapper.Map<AppUser>(registerDto);
             // đối tượng mapper để thực hiện ánh xa các đối tượng registerdto sang appusser
 
-
-
             using var hmac = new HMACSHA512();
-
-           
             user.UserName = registerDto.Username.ToLower();
             user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
             user.PasswordSalt = hmac.Key;

@@ -47,3 +47,4 @@ namespace API.Controllers
         }
     }
 }
+// đc sử dụng để xử lý các yêu cầy http get đến tới api

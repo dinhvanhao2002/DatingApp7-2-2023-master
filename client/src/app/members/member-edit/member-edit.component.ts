@@ -32,6 +32,7 @@ export class MemberEditComponent implements OnInit {
 
   member: Member;
   //biến member lưu trữ thông tin thành viên trình sử
+
   user : User;
   // lưu trữ thông tin của người dùng đang đăng nhập
   // dịch vụ thành viên và điều muốn làm là điền đối tượng
@@ -41,8 +42,6 @@ export class MemberEditComponent implements OnInit {
     this.accountServices.currentUser$.pipe(take(1)).subscribe(user=>this.user= user)
 
     // lấy thông tin người dùng đang đăng nhập và lữu trữ nó bằng biến user
-
-
   }
   ngOnInit(): void {
     this.loadMember();
@@ -50,8 +49,12 @@ export class MemberEditComponent implements OnInit {
   }
 
   loadMember(){
+    console.log(this.user.username);
+
     this.memberService.getMember(this.user.username).subscribe(member=>{
       this.member= member;
+      console.log(this.member);
+
       // đối tượng trả về là đối tượng member của lớp Member
 
     })

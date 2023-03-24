@@ -53,9 +53,12 @@ export class MemberListComponent {
       this.memberService.getMembers(this.userParams).subscribe(response =>{
         this.members = response.result;
         this.pagination = response.pagination;
-        console.log(this.pagination);
+       // console.log(this.pagination);
         //console.log('lỗi ở đây');
       })
+      console.log(this.pagination);
+
+
   }
 
   // hàm reserFilters

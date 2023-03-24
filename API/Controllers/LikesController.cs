@@ -53,8 +53,7 @@ namespace API.Controllers
             var users =  await _likesRepository.GetUserLikes(likesParams);
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize, 
             users.TotalCount, users.TotalPages); 
-            
-
+        
             return Ok(users);
         }
 

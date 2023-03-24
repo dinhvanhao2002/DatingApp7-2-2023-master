@@ -1,0 +1,70 @@
+<!-- <p *ngFor="let message of  messages">{{message?.content}}</p> -->
+
+<div class="card">
+  <div class="card-body">
+    <div class="" *ngIf="messages?.length ===0 ">
+      No messages yet... say hi by using the message box below.
+    </div>
+    <ul *ngIf="messages?.length!> 0" class="chat">
+      <li *ngFor="let message of messages">
+        <div class="d-flex ">
+          <span class="chat-img" >
+              <img  class="rounded-circle"  src="{{message.senderPhotoUrl || './assets/user.png'}} " alt="">
+          </span>
+          <div class="chat-body" style="margin-left: 10px;">
+            <!-- phần header của chat  -->
+            <div class="header ml-3">
+              <small class="text-muted">
+                <span class="fa fa-clocl-o">{{message.messageSent | timeago}}</span>
+                <span class="text-danger" *ngIf="!message.dataRead &&
+                   message.senderUsername!== username">
+                  (unread)
+                </span>
+                <span class="text-success" *ngIf="message.dataRead &&
+                   message.senderUsername!== username">
+                  (read {{message.dataRead | timeago}})
+                </span>
+              </small>
+            </div>
+            <p>{{message.content}}</p>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+
+  </div>
+
+  <div class="card-footer">
+    <form #messageForm="ngForm" (submit)="sendMessage()" autocomplete="off"  >
+      <div class="input-group">
+        <input
+        name="messageContent"
+        required
+        [(ngModel)]="messageContent"
+         type="text"
+         class="form-control input-sm"
+         placeholder="Send a private message">
+        <div class="input-group-append">
+          <button [disabled]="!messageForm.valid" class="btn btn-primary" type="submit">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+<!-- đoạn này định nghĩa 1 form
+  #messageForm="ngForm"  cách đăt tên cho form này
+  (submit)="sendMessage()" là một event binding cho sự kiện "submit" của form
+  nó kích hoạt hàm sendMessage() ở trong member-mesages.ts
+
+  autocomplete= off là 1 thuộc tính để vô hiệu hóa chức năng tự động điền thông tin khi nhập liệu vào form
+  name="messageContent" là thuộc tính cua rinput để định danh cho input này
+  required   yêu cầu phải đc điền trc khi form gửi đi
+  [(ngModel)]="messageContent" ràng buộc 2 chiều để liên kết giá trị của tg input với thuộc tính messagecontent
+  [disabled]="!messageForm.valid" là 1 directive để vô hiệu hóa nút send nếu form k hợp lệ
+
+
+
+
+-->
