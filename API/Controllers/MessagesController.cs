@@ -118,7 +118,6 @@ namespace API.Controllers
             return Unauthorized();
             // kiểm tra xem gn dùng hiện tại có phải là ng gửi hoặc ng nhận tin nhắn hay không , nếu k trả về lỗi unauthozized
 
-
             if(message.Sender.UserName== username) 
             message.SenderDeleted = true;
             

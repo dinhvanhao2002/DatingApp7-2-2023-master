@@ -1,4 +1,6 @@
 ﻿using API.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,13 +11,31 @@ using System.Threading.Tasks;
 namespace API.Data
 {
     
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser,AppRole, int, 
+    IdentityUserClaim<int>, AppUserRole, IdentityUserLogin<int>, 
+    IdentityRoleClaim<int>, IdentityUserToken<int>>  // chúng ta muốn có danh sách các vai trò của ng dùng // chúng tôi sẽ yêu cầu nhận dạng ng dùng IdentityUserClaim
+    // lớp datacontext nó kế thừa lowpsindentitydacontext 
+    //lớp datacontext chịu trách nhiệm quản lý và tương tác cơ sở dữ liệu của ứng dụng
+    // identitydacontext là 1 lớp cung cấp các thành phần quản lý thông tin ng dùng 
+    // các đối số tuyền vào AppUser: đại diện cho đối tượng ng dùng trong ứng dụng
+    //AppRole đại diện cho đối tượng vai trò trong ứng dụng kế thừa từ lớp IdentityRole
+    //int là kiểu định danh dữ liệu của ng dùng và vai trò của ứng dụng
+    //IdentityUserClaim<int>: đại diện cho các thông tin yêu cầu của người dùng, như tên, giới tính, tuổi, địa chỉ, ... trong ứng dụng.
+    //AppUserRole: đại diện cho đối tượng kết nối giữa đối tượng AppUser và AppRole
+    //IdentityUserLogin<int> đại diện cho thông tin đăng nhập của ng dùng ví dụ như tên đăng nhập và mật khẩu
+    //IdentityRoleClaim<int>: đại diện cho các thông tin yêu cầu của vai trò trong ứng dụng.
+    //IdentityUserToken<int>: đại diện cho thông tin mã thông báo của người dùng, được sử dụng để xác thực truy cập của người dùng trong ứng dụng.
+
+
+
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<AppUser> Users { get; set; }
+        // public DbSet<AppUser> Users { get; set; }
+        //điều cta cần làm là ,truy cập vào các vai trò của ng dùng và cta cung cấp thực thể của mình 
+
 
         public DbSet<UserLike> Likes { get; set; }
         // đại diện cho tập hợp các đối tượng userlike đc luuw trong cơ sở dữ liệu
@@ -26,6 +46,23 @@ namespace API.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<AppUser>()
+                    .HasMany(ur=> ur.UserRoles) //xác định mối quan hệ và danh sách các đối tượng AppUserRole , nhớ rằng 1 ng dùng appuser có thể có nhiều vai trò(AppUserRole)
+                    .WithOne(u=> u.User)  //
+                    .HasForeignKey(ur=>ur.UserId) // xác định khóa ngoại trong appuserrole ,nơi lưu trữ khóa chính của appuser
+                    .IsRequired();  // xác định rặng phải có khóa ngoại va fk đc phép có giá trị null, đảm bảo rằng mỗi appuserrole đều liên kết với 1 appuser
+            // xác định lớp cần cấu hình cho việc tạo bảng trong cơ sở dữ liệu 
+            //trong trường hợp này là lớp AppUser
+
+             builder.Entity<AppRole>()
+                    .HasMany(ur=> ur.UserRoles) //xác định mối quan hệ và danh sách các đối tượng AppUserRole , nhớ rằng 1 ng dùng appuser có thể có nhiều vai trò(AppUserRole)
+                    .WithOne(u=>u.Role)
+                    .HasForeignKey(ur=>ur.RoleId) // xác định khóa ngoại trong appuserrole ,nơi lưu trữ khóa chính của appuser
+                    .IsRequired();
+
+        
+
             builder.Entity<UserLike>()
                .HasKey(k => new {k.SourceUserId, k.LikedUserId}); // khóa chính của bảng
 

@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Entities
 {
-    public class AppUser
+    public class AppUser : IdentityUser<int>
     {
-        public int Id { get; set; }
+        // public int Id { get; set; }
 
-        public string UserName { get; set; }
+        // public string UserName { get; set; }
 
-        public byte[] PasswordHash { get; set; }
+        // public byte[] PasswordHash { get; set; }
 
-        public byte[] PasswordSalt { get; set; }
+        // public byte[] PasswordSalt { get; set; }
+        // khi thêm IndentityUser thì nó sẽ xuất hiện cảnh báo
+        // id đang cố ghi đè lên triển khai
 
 
         public DateTime DateOfBirth  { get; set; }
@@ -52,6 +55,10 @@ namespace API.Entities
         public ICollection<Message> MessagesSent { get; set; }
 
         public ICollection<Message> MessagesReceived { get; set; }
+
+
+        public ICollection<AppUserRole> UserRoles { get; set; }
+
 
 
     }

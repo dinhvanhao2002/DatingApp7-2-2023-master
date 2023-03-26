@@ -31,7 +31,9 @@ namespace API.Controllers
             _mapper = mapper;
             _userRepository = userRepository;
         }
-
+        // chúng ta thêm thuộc tính ủy quyền 
+        //chỉ có thể truy cập đc bằng ng dùng có vai trò admin
+        // [Authorize(Roles ="Admin")] 
         [HttpGet]
         // [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
@@ -58,6 +60,8 @@ namespace API.Controllers
         //api/users/3
         //[Authorize]
         // cta nên đặt tên cho nó 
+        // [Authorize(Roles = "Member")]
+        // thành viên có thể nhận đc ng dùng riêng lẻ , trong khi đó quản trị viên có thể nhận đc danh sách đầy đủ 
 
         [HttpGet("{username}", Name ="GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)

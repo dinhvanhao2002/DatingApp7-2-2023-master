@@ -60,7 +60,7 @@
 
       <td>{{message.messageSent | timeago}}</td>
       <td>
-        <button (click)="$event.stopPropagation()" (click)="deleteMessage(message.id)" class="btn btn-danger">Delete</button>
+        <button (click)="$event.stopPropagation()" (click)="deleteMessage(message.id)" class="btn btn-danger btn-color">Delete</button>
         <!--(click)="$event.stopPropagation()" là 1 sự kiện đc xử lý trc khi deletemassage
         nó ngăn chặn các sự kiện click từ lan rộng đến các phần tử bên trong nut delete
       giúp ngăn chặn các sự kiện k mong muốn xảy ra khi nút delete đc nhấn
