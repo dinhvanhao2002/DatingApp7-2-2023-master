@@ -27,7 +27,10 @@ namespace API.Controllers
         {
             var sourceUserId = User.GetUserId();
             var likedUser = await _userRepository.GetUserByUsernameAsync(username);
+            // đại diện cho ng dùng đã đc like 
+            
             var sourceUser =  await _likesRepository.GetUserWithLikes(sourceUserId);
+            // đại diện cho ng dùng đã thực hiện hành động like 
 
             if(likedUser == null )  return NotFound();
 

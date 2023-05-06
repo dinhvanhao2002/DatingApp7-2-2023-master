@@ -22,7 +22,7 @@ export class MemberMessagesComponent implements OnInit {
   @Input() messages : Message[]
 //khai báo 1 thuộc tính có tên messages và kiểu dữ liệu là 1 mảng array các đối tượng message
 //(private messageService: MessageService
-@Input() username: string;
+ @Input() username: string;
   messageContent : string
 
   constructor(private messageService: MessageService){
@@ -36,9 +36,7 @@ export class MemberMessagesComponent implements OnInit {
     this.messageService.sendMessage(this.username, this.messageContent).subscribe(message =>{
        this.messages.push(message);
        // thiết lập lại các thông số trống ở đó
-
        this.messageForm.reset();
-
     })
   }
 

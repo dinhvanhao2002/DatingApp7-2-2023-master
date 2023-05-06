@@ -21,6 +21,9 @@ namespace API.Interfaces
         // pth lấy danh sách lượt thích của ng dùng
 
     
-         
+
     }
 }
+
+// ading likerespository trc khi lm phần này thì tạo interface 
+//interface để định nghĩa các hành vi và pth của 1 đối tượng cần cung cấp 

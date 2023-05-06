@@ -40,6 +40,7 @@ namespace API.Controllers
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
             // lấy thông tin ng dùng hiện tại bằng pth GetUserBy..
+
             userParams.CurrentUsername = user.UserName;
         
             if(string.IsNullOrEmpty(userParams.Gender))
@@ -50,6 +51,7 @@ namespace API.Controllers
             var users = await _userRepository.GetMembersAsync(userParams);
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
              users.TotalCount, users.TotalPages);
+             // phân trang 
 
             return Ok(users);
         }

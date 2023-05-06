@@ -45,6 +45,31 @@ namespace API.Extensions
                       ValidateIssuer = false,
                       ValidateAudience = false,
                   };
+
+                  // cấu hình sự kiện cho jwtbeareroptions đc sd để cấu hình xác thực với ng dùng bằng json
+                //
+
+                  options.Events = new JwtBearerEvents // khởi tạo đối tượng để xác thực ng dùng bằng jwwt
+                  {
+                    OnMessageReceived = context =>  //đc sử lý các yêu cầu signalr
+                    {
+                        //bên trong đây cta có thể lưu mã 
+                        var accessToken = context.Request.Query["access_token"];
+                        //lấy mã thông báo access token
+
+                        //sau đó cta lấy đường dẫn 
+                        var path = context.HttpContext.Request.Path;
+                        if(!string.IsNullOrEmpty(accessToken ) && path.StartsWithSegments("/hubs"))
+                        {
+                            //kiểm tra xem access có giá trị và yêu cầu với hubs hay k nếu đúng cta lưu vào
+                            context.Token = accessToken;
+
+                        }
+                        return Task.CompletedTask;
+                        // xác nhận xử lý của cta đã hoàn thành
+
+                    }
+                  };
               });
             
             services.AddAuthorization(opt =>

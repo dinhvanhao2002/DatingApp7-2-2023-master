@@ -17,6 +17,8 @@ namespace API.DTOs
         public  string KnownAs {get; set;}  // khai báo thêm thuộc tính knownas
 
         public string Gender { get; set; }
+
+        
     }
 }
 

@@ -58,13 +58,13 @@ export class UserManagementComponent implements OnInit {
         })
       }
 
-
     })
   }
 
 
 //hàm này đc sử dụng để lấy danh sách các vai tro có sẵn
-  private getRolesArray(user:any){
+  private getRolesArray(user: any){
+
     const roles:any = [];
     const userRoles = user.roles;
     const availableRoles: any[] = [

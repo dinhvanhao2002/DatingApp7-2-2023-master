@@ -21,3 +21,12 @@ namespace API.Extensions
     }
 }
 
+/*
+ClaimsPrincipal  là 1 đối tượng đc sử dụng trong hệ thống xác thực và ủy quyền , nó bao gồm nhiều danh sách claims những thông tin liên quan đến ng dùng, chẳng hạn như tên đăng nhập , 
+và 1 identity đại diện cho ng duùngo ntgrosng hệ tho xacst thực 
+
+
+
+
+*/
+

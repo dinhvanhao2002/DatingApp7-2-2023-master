@@ -23,6 +23,8 @@ namespace API.Data
             return await _context.Likes.FindAsync(sourceUserId, likedUserId);
         }
 
+        
+
         public async Task<PagedList<LikeDto>> GetUserLikes(LikesParams  likesParams)
         {
              var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();  //lấy tất cả thông tin của ng dùng và sắp xếp theo tên của ng dùng

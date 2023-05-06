@@ -71,8 +71,6 @@ export class MembersService {
     return of(response);
   }
 
-
-
    let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize)
 
    params = params.append('minAge', userParams.minAge.toString());

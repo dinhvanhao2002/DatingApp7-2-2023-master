@@ -16,3 +16,5 @@ namespace API.Entities
         
     }
 }
+
+// sau đó cấu hình thực thể trong Datacontext

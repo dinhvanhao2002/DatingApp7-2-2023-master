@@ -19,8 +19,6 @@ export class RegisterComponent implements OnInit {
     // khai báo thêm
     validationErrors: string[] = [];
 
-
-
   constructor(private accountService: AccountService, private toastr: ToastrService,
     private fb: FormBuilder, private router: Router ) {
   }
@@ -37,7 +35,7 @@ export class RegisterComponent implements OnInit {
   // hàm khởi tạo biểu mẫu đăng ký với 3 trường ,,,,
   initializeForm(){
     this.registerForm =  this.fb.group({
-      gender: ['male'],
+      gender: ['male'],  //mặc định hiện lên male
       username: ['', Validators.required], // kiểm tra trường đã đc điền hay chưa
       knownAs: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
@@ -62,25 +60,30 @@ export class RegisterComponent implements OnInit {
       ? null : {isMatching: true};
     }
   }
+  // hàm này là 1 hàm validatorfn trong angular , được sử dụng để xác nhận liệu các giá trị của 2 tường có khác nhau hay giog nhâu
 
   // lúc này sẽ k cần this.model nữa
   register() {
       console.log(this.registerForm.value);
+      // đăng kí tài khoản mới đến api thông qua pt post
       this.accountService.register(this.registerForm.value).subscribe(response =>{
-        // console.log(response);
+         console.log(response);
         // this.cancel();
         this.router.navigateByUrl('/members');
+        // nếu đăng ký thành công thì noosos sẽ đến trang members
         this.toastr.success('Đăng ký thành công');
-
       }, error => {
         //  console.log(error);
         //  this.toastr.error(error.error);
         this.validationErrors= error;
        })
     }
+
+    // đc sử dụng để đăng ký tài khoản mới
     cancel() {
        this.cancelRegister.emit(false);
     }
+
 }
 
 

@@ -36,7 +36,6 @@ export class MessageService {
   sendMessage( usernam : string , content :string )
   {
     return this.http.post<Message>(this.baseUrl + 'messages', {recipientUsername: usernam, content}
-
     )
   }
 

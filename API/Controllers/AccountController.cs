@@ -38,7 +38,7 @@ namespace API.Controllers
             // kiểm tra xem tên người dùng có tồn tại hay không, nếu tồn tại thì trả về thông báo 
 
             var user = _mapper.Map<AppUser>(registerDto);
-            // đối tượng mapper để thực hiện ánh xa các đối tượng registerdto sang appusser
+            // đối tượng mapper để thực hiện ánh xa các đối tượng registerdto sang appuser
 
             // using var hmac = new HMACSHA512();
             user.UserName = registerDto.Username.ToLower();
@@ -87,7 +87,6 @@ namespace API.Controllers
             .Include(p => p.Photos)
             .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             //pth single ... đc sử dụng để truy csdl bất đồng bộ và lấy ra 1 đối tượng user duy nhất từ csdl 
-
 
             if (user == null) return Unauthorized("Invalid username");
 

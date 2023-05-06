@@ -42,6 +42,8 @@ namespace API.Data
         // cung cấp các pth để thực hiện các thao tac CRUD
 
         public DbSet<Message> Messages { get; set; }
+        // đại diện cho tập hợp các đối tượng message đc luuw trong cơ sở dữ liêu 
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

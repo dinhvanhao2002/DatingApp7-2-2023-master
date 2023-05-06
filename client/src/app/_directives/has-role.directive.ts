@@ -11,7 +11,6 @@ export class HasRoleDirective implements OnInit {
   @Input() appHasRole : string[];
   // input tuwcslaf đc sử dụng là thuộc tính đầu vào, giá trị của nó có thể truyền từ cha sang thằng con
   user : User;
-
   constructor(private viewContainerRef: ViewContainerRef,
      private templateRef: TemplateRef<any>,
      private accountService: AccountService )
@@ -19,7 +18,6 @@ export class HasRoleDirective implements OnInit {
  {
        this.accountService.currentUser$.pipe(take(1)).subscribe(user =>{
         this.user = user;
-
        })
        //sử dụng pth pipe để trả về luồng dữ liệu từ observable là ng dùng hiện tại
        //take(1) lấy giá trị đầu tiên trả về observable
@@ -27,15 +25,17 @@ export class HasRoleDirective implements OnInit {
   }
   ngOnInit(): void {
     //clear view if no roles
-    if(! this.user?.roles || this.user==null)
+    if(!this.user?.roles || this.user==null)
     {
       this.viewContainerRef.clear();
-      // nếu ng dùng k có role hoặc k có user thì se xẩn view bằng cách clear view
+      // nếu ng dùng k có role hoặc k có user thì se xẩn view bằng cách clear view4
+      return;
 
     }
     if(this.user?.roles.some(r => this.appHasRole.includes(r)))
     {
       this.viewContainerRef.createEmbeddedView(this.templateRef)
+
     }else{
       this.viewContainerRef.clear();
     }

@@ -15,7 +15,7 @@ export class AdminGuard implements CanActivate {
   canActivate(): Observable<boolean> {  // biểu thị quyền truy cập ng dùng
     return this.accountService.currentUser$.pipe(
       map(user => {
-        if(user.roles.includes('Admin')|| user.roles.includes('Moderator')){
+        if(user.roles.includes('Admin')|| user.roles.includes('Moderator') ){
           return true;
         }
         this.toastr.error('You cannot enter this area')
